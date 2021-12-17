@@ -15,9 +15,7 @@ public class G1Parser {
 	private static final String XPATH_DATE = "//p[@class=\"content-publication-data__updated\"]";
 	private static final String XPATH_TITLE = "//h1[@class=\"content-head__title\"]";
 	private static final String XPATH_SUBTITLE = "//h2[@class=\"content-head__subtitle\"]";
-	private static final String XPATH_AUTHOR = "//p[@class=\"content-publication-data__from\"]";
-	private static final String XPATH_AUTHO = "//p[@class=\"content-publication-data__from\"]";
-	
+	private static final String XPATH_AUTHOR = "//p[@class=\"content-publication-data__from\"]";	
 	
 	private String url;
 	private News news;
