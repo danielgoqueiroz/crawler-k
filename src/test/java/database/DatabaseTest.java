@@ -1,9 +1,12 @@
 package database;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
 
 import model.News;
 
@@ -20,6 +23,8 @@ public class DatabaseTest {
 	void deveSalvarUrlParaSerVisitada() {
 		News news = getNews();
 		database.save(news);
+		Item item = database.get(news.getId());
+		assertNotNull(item);
 		//deve salvar url
 		//deve buscar url e o registro não retornar conteúdo de notícia
 	}
@@ -32,6 +37,12 @@ public class DatabaseTest {
 		//deve atualizar registro com conteudo
 		//deve retornar conteúdo para registro
 		//a url deve constar como visitada
+	}
+	
+	@Test
+	void deveRetornarItem() {
+		Item item = database.get(getNews().getId());
+		assertNotNull(item);
 	}
 	
 	@Test
