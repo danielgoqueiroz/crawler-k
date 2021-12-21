@@ -1,7 +1,28 @@
 package crawler;
 
+import static crawler.G1CrawlerSitemap.SITEMAP_URL;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.IOException;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
 public class CrawlerTest {
 
+	@Test
+	void deveExtrairLinksXmlDeSitemapLink() throws IOException {
+		G1CrawlerSitemap crawler = new G1CrawlerSitemap();
+		List<String> xmls = crawler.findUrls(SITEMAP_URL);
+		
+		assertTrue(xmls.size() > 0);
+		
+		String url = xmls.get(0);
+		assertNotNull(url);
+		assertTrue(url.startsWith("http://pox.globo.com/sitemap/g1/"));
+		assertTrue(url.endsWith(".xml"));
+	}
 	
 	// Encontre todas as notícias nos sites "https://g1.globo.com/" e "https://www.infomoney.com.br/mercados/"
 	

@@ -1,9 +1,13 @@
 package model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class News {
 
+	private String id;
 	private String url;
 	private String title;
 	private String caption;
@@ -31,6 +35,7 @@ public class News {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+		this.id = getId();
 	}
 	public String getTitle() {
 		return title;
@@ -53,6 +58,15 @@ public class News {
 	public Date getDate() {
 		return date;
 	}
+	public void setDate(String date, String dateFormat) {
+		SimpleDateFormat format = new SimpleDateFormat(dateFormat);
+		try {
+			this.date = format.parse(date);
+		} catch (ParseException e) {
+			this.date = new Date();
+			e.printStackTrace();
+		}
+	}
 	public void setDate(Date date) {
 		this.date = date;
 	}
@@ -62,6 +76,9 @@ public class News {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
+
+	public String getId() {
+        return UUID.nameUUIDFromBytes(getUrl().getBytes()).toString();
+	}
 
 }
