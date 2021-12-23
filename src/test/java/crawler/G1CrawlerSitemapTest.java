@@ -1,34 +1,40 @@
 package crawler;
 
 import static crawler.G1CrawlerSitemap.SITEMAP_URL;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Queue;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import Utils.TestUtils;
+import database.Database;
 
 public class G1CrawlerSitemapTest {
 
+	private Database database;
+	
+	@BeforeEach
+	void before() {
+		TestUtils.DynamoServer();
+		database = new Database();
+		database.reset("news");
+	}
+	
 	@Test
 	void deveNavegarNosLinksEncontrados() throws IOException {
+		
 		G1CrawlerSitemap crawler = new G1CrawlerSitemap();
+		crawler.setSITEMAP_URL("http://pox.globo.com/sitemap/g1/2006/09/25_1.xml");
 		crawler.crawle();
 		
-		File newsFolder = new File("target/news/");
-		if (!newsFolder.exists()) {
-			newsFolder.mkdirs();
-		} else {
-			newsFolder.delete();
-			newsFolder.mkdirs();
-		}
-		
-		File[] newsFiles = newsFolder.listFiles();
-		
-		assertTrue(newsFiles.length > 0);
+		int sizeExtual = database.getAll().size();
+		assertEquals(10, sizeExtual);
 		
 	}
 	

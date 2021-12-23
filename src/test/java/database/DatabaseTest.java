@@ -1,73 +1,53 @@
 package database;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.BeforeAll;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 
+import Utils.TestUtils;
 import model.News;
 
 public class DatabaseTest {
 
 	private static Database database;
 
-	@BeforeAll
-	static void before() {
+	@BeforeEach
+	void before() {
+		TestUtils.DynamoServer();
 		database = new Database();
+		database.reset("news");
 	}
-
+	
 	@Test
-	void deveSalvarUrlParaSerVisitada() {
-		News news = getNews();
+	void deveSalvarNews() {
+		int sizeExpected = database.getAll().size() + 1;
+		News news = TestUtils.getNews();
 		database.save(news);
 		Item item = database.get(news.getId());
-		assertNotNull(item);
-		//deve salvar url
-		//deve buscar url e o registro não retornar conteúdo de notícia
-	}
-
-	
-	@Test
-	void deveVerificarSeUrlJaFoiVisitadaERotornarFalse() {
-		//deve salvar url
-		//deve realizar busca de conteúdo para a url
-		//deve atualizar registro com conteudo
-		//deve retornar conteúdo para registro
-		//a url deve constar como visitada
+		News newsSaved = News.itemToNews(item);
+		assertNotNull(newsSaved);
+		int size = database.getAll().size();
+		assertEquals(sizeExpected, size);
 	}
 	
 	@Test
-	void deveRetornarItem() {
-		Item item = database.get(getNews().getId());
-		assertNotNull(item);
+	void deveRetornarNewsSalva() {
+		News news = TestUtils.getNews();
+		database.save(news);
+		Item item = database.get(news.getId());
+		News newsSaved = News.itemToNews(item);
+		assertNotNull(newsSaved);
+		List<News> items = database.getAll();
+		assertEquals(1, items.size());
 	}
 	
-	@Test
-	void deveSalvarItem() {
-		
-	}
-
-	@Test
-	void deveVerificarSeUrlJaFoiVisitada() {
-		//deve salvar url
-		//deve verificar conteudo de registro salvo
-		//deve obter conteudo de url 
-		//deve atualizar registro com conteudo retornado
-		//deve verificar se registro foi atualizado com sucesso 
-	}
-	
-	private News getNews() {
-		News news = new News();
-		news.setUrl("https://g1.globo.com/pe/pernambuco/educacao/noticia/2021/12/07/justica-federal-suspende-processo-seletivo-para-cursos-tecnicos-de-nivel-medio-integrado-do-ifpe.ghtml");
-		news.setAuthor("g1 PE");
-		news.setContent("1 de 1 Em sua decisão, o magistrado destacou que \"o critério adotado para a seleção é incompatível com a isonomia\". — Foto: Pedro Alves/G1 Em sua decisão, o magistrado destacou que \"o critério adotado para a seleção é incompatível com a isonomia\". — Foto: Pedro Alves/G1 Uma decisão liminar da Justiça Federal em Pernambuco (JFPE) suspendeu, nesta terça (7), o processo seletivo para ingresso de novos alunos nos cursos técnicos de nível médio integrado no ano letivo 2022.1 do Instituto Federal de Educação, Ciência e Tecnologia de Pernambuco (IFPE), incluindo Proeja. Ela é resultado de um mandado de segurança impetrado por um candidato inscrito no certame. Reitores de instituições federais buscam caminhos para lidar com cortes no orçamento Em 11 anos, orçamento do MEC para as universidades federais cai 37% O IFPE anunciou em outubro o edital do Processo de Ingresso 2022.1 e que, pelo segundo ano, devido à pandemia, não haverá provas e que a seleção será feita por meio de análise do histórico escolar dos ensinos fundamental e médio, a depender da modalidade de curso, e da nota geral do Exame Nacional do Ensino Médio (Enem). De acordo com o autor da ação, esse tipo de seleção \"não submete os concorrentes às mesmas condições de avaliação\". Ele alegou, ainda, que \"nem todos os professores são igualmente rigorosos nas correções de suas provas e que alguns colégios usam de trabalhos e atividades extras para 'complementar a nota', além de as notas serem sujeitas a influências externas e internas\". Ele também alegou que \"se a 'régua' é retirada, todo o sistema é posto em descrédito e, ao final, a seleção não será dos melhores alunos, mas daqueles que tiveram mais oportunidades, professores menos exigentes, melhor nível de relacionamento\". Outro argumento é que os alunos aprovados terão aulas presenciais, o que demonstra que a pandemia de Covid não justifica a alteração da regra tradicional. Em sua decisão, o juiz da 21ª da JFPE, Francisco Antônio de Barros e Silva Neto, destacou que \"o critério adotado para a seleção é incompatível com a isonomia, pois incapaz de medir o conhecimento dos candidatos e candidatas às vagas\". Ele também diz que é nítida \"a desigualdade entre as instituições escolares (quer públicas, quer privadas) no que tange aos projetos pedagógicos e às metodologias de ensino e de avaliação\". Na decisão, o juiz acrescentou, ainda, que a metodologia de avaliação adotada pelas escolas não é sujeita a qualquer controle institucional nem social, o que impossibilita o seu uso como critério decisivo em uma seleção regida pelos princípios gerais da administração pública. \"Daí a necessidade de aplicação de provas impessoais, transparentes e uniformes, à semelhança dos exames vestibulares e do Exame Nacional do Ensino Médio (ENEM)\", destacou. O juiz acrescentou que a pandemia de Covid-19 não serve como justificativa para a flexibilização do sistema objetivo de acesso às vagas, já que foi retomada a aplicação presencial do Enem, a realização de concursos públicos e as aulas presenciais na própria rede federal de ensino. Em nota, o IFPE informou que suspendeu a seleção para cursos técnicos presenciais, seguindo a decisão judicial, e que, com isso \"a lista final das inscrições e o resultado preliminar do processo referentes aos cursos técnicos não serão publicados nesta terça-feira, 7 de dezembro de 2021, como previsto\". \"Está mantida, conforme o cronograma, a publicação da lista final das inscrições e o resultado preliminar do processo referentes ao Processo de Ingresso 2022.1 para cursos superiores presenciais\", disse ainda, mas não informou como fica o restante da seleção. VÍDEOS: Mais assistidos de Pernambuco nos últimos 7 dias 200 vídeos");
-		news.setCaption("Decisão liminar para seleção do ano letivo 2022.1 é resultado de um mandado de segurança impetrado por candidato, que alega que sistema de médias escolares adotado pela instituição não é justo.");
-		news.setTitle("Justiça Federal suspende processo seletivo para cursos técnicos do IFPE");
-		news.setDate("07/12/2021 18h55", "dd/MM/yyyy HH'h'mm");
-		return news;
-	}
-
 }

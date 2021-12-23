@@ -1,9 +1,12 @@
 # crawler-k
  
 https://g1.globo.com/sitemap/g1/
+https://www.infomoney.com.br/mercados/
 
-## Queue
-https://www.youtube.com/watch?v=UOr9kMCCa5g
+## Requisitos
+Docker
+Chrome versão 96
+ChromeDriver versão 96 (https://sites.google.com/chromium.org/driver/)
 
 ## DynamoDB
 
@@ -19,10 +22,10 @@ docker run -p 8000:8000 amazon/dynamodb-local
 aws dynamodb create-table --table-name news --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --billing-mode PAY_PER_REQUEST --endpoint-url http://localhost:8000
 
 Ver tabelas
+aws dynamodb list-tables --endpoint-url http://localhost:8000
+
+Ver Itens
+aws dynamodb scan --table-name news --endpoint-url http://localhost:8000
 
 Criar tabelas
 aws dynamodb create-table --attribute-definitions AttributeName=id,AttributeType=S --table-name news --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --region ap-southeast-2 --output json --profile myaws-admin
-
-
-Ver Itens
-aws dynamodb scan --table-name NEWS --endpoint-url http://127.0.0.1:8000
