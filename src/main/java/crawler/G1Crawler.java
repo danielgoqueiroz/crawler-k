@@ -22,122 +22,95 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import Utils.Utils;
 import database.Database;
 import model.News;
+import model.NewsUnknow;
 import parser.G1Parser;
 import webdriver.WebDriver;
 
-public class G1Crawler {
-
-	enum TYPE {
-		SITEMAP, NAVIGATION;
-	}
-
-	private static String URL = "https://g1.globo.com";
-	private static Database database;
-	private WebDriver driver;
-
-	static String SITEMAP_URL = URL + "/sitemap/g1/sitemap.xml";
-	private static String XPATH_CATEGORIES = "//nav//a[contains(href, menu-item)]";
-	private TYPE type;
+public class G1Crawler extends Crawler {
 
 	public G1Crawler() {
-		new G1Crawler(TYPE.SITEMAP);
+		super("https://g1.globo.com", "/sitemap/g1/sitemap.xml");
 	}
 
 	public G1Crawler(TYPE type) {
-		database = new Database();
-		this.type = type;
+		super("https://g1.globo.com", "/sitemap/g1/sitemap.xml");
 	}
 
-	private WebDriver getDriverInstance() {
-		if (driver == null) {
-			driver = new WebDriver();
+	WebDriver getDriverInstance() {
+		if (getDriver()== null) {
+			setDriver(new WebDriver());
 		}
-		return driver;
+		return getDriver();
 	}
 
 	public void crawle() {
 		try {
-			System.out.println("Iniciando coleta do tipo: " + type);
-			if (type == TYPE.SITEMAP) {
-				findUrls(SITEMAP_URL);
-			} else if (type == TYPE.NAVIGATION) {
-				findUrls(URL);
-			} 
-		}
-		catch (Exception e) {
+			System.out.println("Iniciando coleta do tipo: " + getType());
+			if (getType() == TYPE.SITEMAP) {
+				findUrls(getSitemapUrl());
+			} else if (getType() == TYPE.NAVIGATION) {
+				findUrls(getUrl());
+			}
+		} catch (Exception e) {
 			e.getStackTrace();
+		} finally {
+			getDriver().close();
+			getDriver().quit();
 		}
-
+		
 	}
 
 	List<String> findUrls(String url) {
-		WebDriver driver = getDriverInstance();
-		driver.get(url);
 		Set<String> urls = new HashSet<String>();
 		try {
-
-			System.out.println("Navegando até " + url);
-			System.out.println("Tipo de navegação " + type);
-
-			if (url.contentEquals(URL)) {
-				List<String> extractSubcategories = extractSubcategories();
-				System.out.println("Encontrados " + extractSubcategories.size() + " links na página " + url);
-				urls.addAll(extractSubcategories);
-			} else if (url.endsWith(".xml")) {
+			if (url.endsWith(".xml")) {
 				try {
 					List<String> urlsXml = extractSitemapUrls(url);
-					urlsXml.forEach(u -> {
-						if (u.endsWith(".xml")) {
-							System.out.println("XML: " + u);
-							findUrls(u);
-						} else {
-							urls.add(u);
-							List<String> linksFromHrml = extractHtml(u);
-							urls.addAll(linksFromHrml);
-						}
-					});
+					urls.addAll(urlsXml);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			} else if (url.contentEquals(getUrl())) {
+				System.out.println("Coletando links de página root: " + url);
+				processHtml(url, urls);
+			} else {
+				System.out.println("Coletando página: " + url);
+				News news = processHtml(url, urls);
+				saveResult(url, news);
 			}
-			
 			return new ArrayList<String>(urls);
+		} catch (Exception e) {
+			e.getStackTrace();
+			return Collections.emptyList();
 		} finally {
-			urls.forEach(u -> {
+			List<String> urlsFiltred = urls.stream().filter(u-> !getDatabase().exist(Utils.getHash(u))).collect(Collectors.toList());
+			urlsFiltred.forEach(u -> {
 				findUrls(u);
 			});
 		}
 	}
 
-	List<String> extractSubcategories() {
-		List<WebElement> elements = getDriverInstance().getElements(XPATH_CATEGORIES);
-		List<String> categories = elements.stream().map(item -> item.getAttribute("href")).filter(item -> item != null)
-				.collect(Collectors.toList());
-		return categories;
+	private News processHtml(String url, Set<String> urls) throws ParseException, IOException {
+		G1Parser parser = new G1Parser(url);
+		News news = parser.parse();
+		List<String> links = parser.getLinks();
+		urls.addAll(links);
+		System.out.println("Encontrados " + links.size() + " links adicionais");
+		return news;
 	}
 
-	private List<String> extractHtml(String url) {
-		if (!url.endsWith("xml")) {
-			News news;
-			try {
-				G1Parser parser = new G1Parser(url);
-				news = parser.parse();
-				if (news != null) {
-					try {
-						database.save(news);
-						System.out.println("Site salvo: " + news.getTitle());
-					} catch (Exception e) {
-						e.fillInStackTrace();
-					}
-				}
-				return parser.extractLinks();
-			} catch (ParseException | IOException e1) {
-				e1.printStackTrace();
-			}
+	private void saveResult(String url, News news) {
+		if (news != null) {
+			System.out.println("Salvando página");
+			getDatabase().save(news);
+		} else {
+			NewsUnknow unknoew = new NewsUnknow(url);
+			System.out.println("Não encontrou conteúdo. Salvando url como visitada para ser ignorada ou ser revisitada.");
+			getDatabase().save(unknoew);
 		}
-		return Collections.emptyList();
 	}
 
 	private List<String> extractSitemapUrls(String url) throws IOException {
@@ -161,14 +134,6 @@ public class G1Crawler {
 	private String getId(String u) {
 		UUID uuid = UUID.nameUUIDFromBytes(u.getBytes());
 		return uuid.toString();
-	}
-
-	public static String getSITEMAP_URL() {
-		return SITEMAP_URL;
-	}
-
-	static void setSITEMAP_URL(String url) {
-		SITEMAP_URL = url;
 	}
 
 }

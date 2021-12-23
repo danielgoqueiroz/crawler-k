@@ -29,6 +29,7 @@ import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.google.gson.Gson;
 
 import model.News;
+import model.NewsUnknow;
 
 public class Database {
 
@@ -79,6 +80,15 @@ public class Database {
 		}
 	}
 	
+	public Item save(NewsUnknow newsUnknow) {
+		Table table = dynamoDB.getTable(NEWS);
+		Item item = NewsUnknow.getItem(newsUnknow);
+		PutItemOutcome putItem = table.putItem(item);
+		Item itemSaved = putItem.getItem();
+		System.out.println("Notícia sem conteúdo"+ newsUnknow.getId() + " salva no banco.");
+		return itemSaved;
+	}
+	
 	public Item save(News news) {
 		Table table = dynamoDB.getTable(NEWS);
 		Item item = News.getItem(news);
@@ -87,13 +97,18 @@ public class Database {
 		System.out.println("Notícia "+ news.getId() + " salva no banco.");
 		return itemSaved;
 	}
+	
+	public boolean exist(String id) {
+			Table table = dynamoDB.getTable(NEWS);
+			Item item = table.getItem("id", id);
+			return item != null;
+	}
 
 	public Item get(String id) {
 		Table table = dynamoDB.getTable(NEWS);
 		Item item = table.getItem("id", id);
 		System.out.println(item);
 		return item;
-
 	}
 
 	public List<News> getAll() {

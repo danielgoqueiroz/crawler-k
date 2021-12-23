@@ -1,6 +1,7 @@
 package webdriver;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +12,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+
+import crawler.G1Crawler;
 
 
 public class WebDriverTest {
@@ -26,6 +29,7 @@ public class WebDriverTest {
 		Elements selectXpath = doc.selectXpath("//h1[@class=\"entry-title\"]");
 		System.out.println(selectXpath.text());
 		assertNotNull(selectXpath);
+		driver.close();
 	}
 	
 }

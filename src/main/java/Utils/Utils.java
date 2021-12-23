@@ -12,7 +12,7 @@ public class Utils {
 		}
 	}
 	
-	public String getHash(String text) {
+	public static String getHash(String text) {
 		if (text == null) {
 			return UUID.randomUUID().toString();
 		}

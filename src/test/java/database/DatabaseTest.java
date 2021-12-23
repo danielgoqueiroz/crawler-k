@@ -1,5 +1,6 @@
 package database;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -40,6 +41,21 @@ public class DatabaseTest {
 		assertNotNull(newsSaved);
 		int size = database.getAll().size();
 		assertEquals(sizeExpected, size);
+	}
+	
+	@Test
+	void deveRetornarFalseSeLinkJaFoiSalvo() {
+		News news = TestUtils.getNews();
+		boolean exist = database.exist(news.getId());
+		assertFalse(exist);
+	}
+	
+	@Test
+	void deveRetornarTrueSeLinkJaFoiSalvo() {
+		News news = TestUtils.getNews();
+		database.save(news);
+		boolean exist = database.exist(news.getId());
+		assertTrue(exist);
 	}
 	
 	@Test

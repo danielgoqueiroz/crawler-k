@@ -2,6 +2,7 @@ package parser;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -17,6 +18,13 @@ import model.News;
 public class G1ParserTest {
 
 	@Test
+	void deveExtrairLinksDaPagina() throws IOException, ParseException {
+		G1Parser parser = new G1Parser("http://g1.globo.com/jornal-nacional/noticia/2016/10/pf-investigou-policia-do-senado-por-cinco-meses.html");
+		parser.parse();
+		assertEquals(236, parser.getLinks().size());
+	}
+	
+	@Test
 	void deveRealizarParserDePaginaDeNoticia2016() throws IOException, ParseException {
 		G1Parser parser = new G1Parser("http://g1.globo.com/jornal-nacional/noticia/2016/10/pf-investigou-policia-do-senado-por-cinco-meses.html");
 		News news  = parser.parse();
@@ -29,7 +37,6 @@ public class G1ParserTest {
 	}
 	
 	@Test
-	@Ignore("não está identificando o xpath")
 	void deveRealizarParserDePaginaDeNoticia2006() throws IOException, ParseException {
 		G1Parser parser = new G1Parser("http://g1.globo.com/platb/redacao/2006/09/25/rio-cinema");
 		News news  = parser.parse();
