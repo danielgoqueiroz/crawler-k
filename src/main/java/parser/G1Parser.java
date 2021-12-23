@@ -3,6 +3,12 @@ package parser;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -11,6 +17,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import model.News;
 import webdriver.WebDriver;
@@ -33,12 +40,12 @@ public class G1Parser {
 				"//div[@class=\"auto\"]", // author
 				"EEE, dd/MM/yy" // dateFormat
 		),
-		F2016("//div[@class=\"entry\"]", // artigo
-				"//div[@class=\"time\"]", // date
-				"//h1[@class=\"entry-title\"]", // title
-				"//div[@class=\"post\"]//h2", // subtitle
-				"//div[@class=\"auto\"]", // author
-				"EEE, dd/MM/yy" // dateFormat
+		F2016("//div[@id=\"materia-letra\"]", // artigo
+				"//abbr[@class=\"published\"]", // date
+				"//div[@class=\"materia-titulo\"]//h1", // title
+				"//div[@class=\"materia-titulo\"]//h2", // subtitle
+				"//span[@class=\"texto gui-color-primary\"]", // author
+				"dd/MM/yyyy HH'h'mm" // dateFormat
 		);
 
 		public String DATE_FORMAT;
@@ -61,18 +68,22 @@ public class G1Parser {
 
 	private String url;
 	private WebDriver driver;
+	private List<String> links;
 	
 	public G1Parser(String url) {
+		links = Collections.emptyList();
 		driver = new WebDriver();
 		this.url = url;
 	}
+	
+	
 
 	public News parse() throws ParseException, IOException {
 		try {
-			
 			News news = new News();
 			
 			driver.navigate(url);
+			extractLinks();
 			
 			PageFormat pageFormat = getFormat(driver);
 			
@@ -96,17 +107,37 @@ public class G1Parser {
 			driver.close();
 		}
 	}
-
+	
+	public List<String> extractLinks() {
+		try {
+			List<WebElement> elements = this.driver.getElements("//a[@href]");
+			Set<String> links = elements.stream().map(item -> item.getAttribute("href")).collect(Collectors.toSet());
+			System.out.println("Encontrados " + links.size() + " adicionais.");
+			links.addAll(links);
+			return new ArrayList<String>(links);
+		} catch (Exception e) {
+			return Collections.emptyList();
+		}
+	}
+	
 	private PageFormat getFormat(WebDriver driver) {
 		
 		for (PageFormat format : PageFormat.values()) {
 			String xPath = format.XPATH_TITLE;
-			String value = driver.getText(xPath);
-			if (!value.isEmpty()) {
-				return format;
-			}
+			try {
+				String value = driver.getText(xPath);
+				if (!value.isEmpty()) {
+					return format;
+				}
+			} catch (Exception e) {}
 		}
 		return null;
+	}
+
+
+
+	public List<String> getLinks() {
+		return links;
 	}
 
 }

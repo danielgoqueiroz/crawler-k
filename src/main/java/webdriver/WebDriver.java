@@ -1,23 +1,27 @@
 package webdriver;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WebDriver {
 
-	private static ChromeDriver driver;
+	private ChromeDriver driver;
 	
 	public WebDriver() {
+		if (driver == null) {
+			driver = newDrive();
+		}
+	}
+	
+	public static ChromeDriver newDrive() {
 		System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");	
 		System.setProperty("webdriver.chrome.whitelistedIps", "");
 		
@@ -29,11 +33,10 @@ public class WebDriver {
 		prefs.put("password_manager_enabled", false);
 		options.setExperimentalOption("prefs", prefs);
 		options.addArguments("chrome.switches","--disable-extensions");
-		options.addArguments("--headless");
+//		options.addArguments("--headless");
 		options.addArguments("--test-type");
 		
-		driver = new ChromeDriver(options);
-		
+		return new ChromeDriver(options);
 	}
 	
 	public void close() {
@@ -42,6 +45,15 @@ public class WebDriver {
 	
 	public void navigate(String url) {
 		driver.get(url);
+	}
+	
+	public List<WebElement> getElements(String xpath) {
+		try {
+			List<WebElement> findElements = this.driver.findElements(By.xpath(xpath));
+			return findElements;
+		} catch (Exception e) {
+			return Collections.emptyList();
+		}
 	}
 	
 	public String getText(String xpath) {
@@ -56,7 +68,6 @@ public class WebDriver {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		close();
 		return html;
 	}
 	

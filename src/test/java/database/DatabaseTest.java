@@ -12,6 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.ListServicesCmd;
+import com.github.dockerjava.core.DockerClientBuilder;
 
 import Utils.TestUtils;
 import model.News;

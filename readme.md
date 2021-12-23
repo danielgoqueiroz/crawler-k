@@ -29,3 +29,7 @@ aws dynamodb scan --table-name news --endpoint-url http://localhost:8000
 
 Criar tabelas
 aws dynamodb create-table --attribute-definitions AttributeName=id,AttributeType=S --table-name news --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --region ap-southeast-2 --output json --profile myaws-admin
+
+
+# Pendências
+Adicionar identificadores de formatos de páginas para parser
