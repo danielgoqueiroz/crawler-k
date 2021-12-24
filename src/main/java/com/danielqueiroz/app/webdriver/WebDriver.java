@@ -10,16 +10,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class WebDriver {
 	
-	private static Logger logger = LoggerFactory.getLogger(WebDriver.class);
-
-
 	private ChromeDriver driver;
 
 	public WebDriver(ChromeDriver driver) {
@@ -93,21 +88,21 @@ public class WebDriver {
 		try {
 			Thread.sleep(timeoutInSecounds * 1000);
 		} catch (InterruptedException e) {
-			logger.error(e.getMessage());
+			System.out.println(e.getMessage());
 		}
 		driver.executeScript(script);
 	}
 
 	public void click(String id) {
-		logger.info("Buscando botão 'ver mais': ");
+		System.out.println("Buscando botão 'ver mais': ");
 		try {
 			driver.wait(1000);
 			Actions actions = new Actions(driver);
 			WebElement button = driver.findElement(By.id(id)).findElement(By.tagName("button"));
 			actions.moveToElement(button).click().perform();
-			logger.info("Clicado.");
+			System.out.println("Clicado.");
 		} catch (Exception e) {
-			logger.info("Não encontrado.");
+			System.out.println("Não encontrado.");
 		}
 	}
 

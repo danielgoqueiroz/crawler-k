@@ -1,0 +1,8 @@
+com\danielqueiroz\app\webdriver\ChromeDriverTest.class
+com\danielqueiroz\app\webdriver\WebDriverTest.class
+com\danielqueiroz\app\crawler\InfoMoneyCrawlerTest.class
+com\danielqueiroz\app\utils\TestUtils.class
+com\danielqueiroz\app\crawler\G1CrawlerTest.class
+com\danielqueiroz\app\parser\InfomoneyParserTest.class
+com\danielqueiroz\app\database\DatabaseTest.class
+com\danielqueiroz\app\parser\G1ParserTest.class

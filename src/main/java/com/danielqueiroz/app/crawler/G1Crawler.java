@@ -14,16 +14,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.danielqueiroz.app.model.News;
 import com.danielqueiroz.app.parser.G1Parser;
 import com.danielqueiroz.app.utils.Utils;
 
 public class G1Crawler extends Crawler {
-
-	private static Logger logger = LoggerFactory.getLogger(G1Crawler.class);
 
 	public G1Crawler() {
 		super("https://g1.globo.com", "/sitemap/g1/sitemap.xml");
@@ -36,14 +32,14 @@ public class G1Crawler extends Crawler {
 
 	public void crawle() {
 		try {
-			logger.info("Iniciando coleta do tipo: " + getType());
+			System.out.println("Iniciando coleta do tipo: " + getType());
 			if (getType() == TYPE.SITEMAP) {
 				findUrls(getSitemapUrl());
 			} else if (getType() == TYPE.NAVIGATION) {
 				findUrls(getUrl());
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			System.out.println(e.getMessage());
 		} finally {
 			if (getDriver() != null) {
 				getDriver().close();
@@ -52,7 +48,7 @@ public class G1Crawler extends Crawler {
 	}
 
 	public List<String> extractSitemapUrls(String url) throws IOException {
-		logger.info("Extraindo links de sitemap: " + url);
+		System.out.println("Extraindo links de sitemap: " + url);
 		Document documentRaw;
 		documentRaw = Jsoup.connect(url).get();
 		Document docXml = Jsoup.parse(documentRaw.html(), Parser.xmlParser());
@@ -60,7 +56,7 @@ public class G1Crawler extends Crawler {
 
 		List<Element> subList = locElements.subList(0, locElements.size());
 		List<String> urls = subList.stream().map(el -> el.text().toString()).collect(Collectors.toList());
-		logger.info("Encontrados: " + urls.size() + " itens.");
+		System.out.println("Encontrados: " + urls.size() + " itens.");
 		return urls;
 	}
 
@@ -72,13 +68,13 @@ public class G1Crawler extends Crawler {
 					List<String> urlsXml = extractSitemapUrls(url);
 					urls.addAll(urlsXml);
 				} catch (IOException e) {
-					logger.error(e.getMessage());
+					System.out.println(e.getMessage());
 				}
 			} else if (url.contentEquals(getUrl())) {
-				logger.info("Coletando links de página root: " + url);
+				System.out.println("Coletando links de página root: " + url);
 				processHtml(url, urls);
 			} else {
-				logger.info("Coletando página: " + url);
+				System.out.println("Coletando página: " + url);
 				News news = processHtml(url, urls);
 				saveResult(url, news);
 			}
@@ -100,7 +96,7 @@ public class G1Crawler extends Crawler {
 		News news = parser.parse();
 		List<String> links = parser.getLinks();
 		urls.addAll(links);
-		logger.info("Encontrados " + links.size() + " links adicionais");
+		System.out.println("Encontrados " + links.size() + " links adicionais");
 		return news;
 	}
 

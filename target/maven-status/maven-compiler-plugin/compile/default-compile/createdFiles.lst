@@ -1,0 +1,16 @@
+com\danielqueiroz\app\parser\G1Parser$PageFormat.class
+com\danielqueiroz\app\parser\InfomoneyParser.class
+com\danielqueiroz\app\model\News.class
+com\danielqueiroz\app\CrawlerMain.class
+com\danielqueiroz\app\parser\InfomoneyParser$PageFormat.class
+com\danielqueiroz\app\utils\Utils.class
+com\danielqueiroz\app\crawler\G1Crawler.class
+com\danielqueiroz\app\crawler\Crawler.class
+com\danielqueiroz\app\runnable\G1Runnable.class
+com\danielqueiroz\app\runnable\InfomoneyRunnable.class
+com\danielqueiroz\app\webdriver\WebDriver.class
+com\danielqueiroz\app\crawler\InfomoneyCrawler.class
+com\danielqueiroz\app\parser\G1Parser.class
+com\danielqueiroz\app\crawler\Crawler$TYPE.class
+com\danielqueiroz\app\model\NewsUnknow.class
+com\danielqueiroz\app\database\Database.class

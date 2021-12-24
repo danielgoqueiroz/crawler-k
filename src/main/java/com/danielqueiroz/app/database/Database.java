@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -36,7 +34,6 @@ import com.google.gson.Gson;
 
 public class Database {
 
-	private static Logger logger = LoggerFactory.getLogger(Database.class);
 
 	private static final String NEWS = "news";
 	private static AmazonDynamoDB client;
@@ -101,7 +98,7 @@ public class Database {
 					new ProvisionedThroughput(1L, 1L));
 			try {
 				table.waitForActive();
-				logger.info("Sucesso.  Status da tebela: " + table.getDescription().getTableStatus());
+				System.out.println("Sucesso.  Status da tebela: " + table.getDescription().getTableStatus());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				System.err.println("Erro ao criar tabela: " + table.getDescription().getTableStatus());
@@ -124,7 +121,7 @@ public class Database {
 		Item item = NewsUnknow.getItem(newsUnknow);
 		PutItemOutcome putItem = table.putItem(item);
 		Item itemSaved = putItem.getItem();
-		logger.info("Notícia sem conteúdo"+ newsUnknow.getId() + " salva no banco.");
+		System.out.println("Notícia sem conteúdo"+ newsUnknow.getId() + " salva no banco.");
 		return itemSaved;
 	}
 	
@@ -133,7 +130,7 @@ public class Database {
 		Item item = News.getItem(news);
 		PutItemOutcome putItem = table.putItem(item);
 		Item itemSaved = putItem.getItem();
-		logger.info("Notícia "+ news.getId() + " salva no banco.");
+		System.out.println("Notícia "+ news.getId() + " salva no banco.");
 		return itemSaved;
 	}
 	
@@ -168,7 +165,7 @@ public class Database {
 		}
 
 		if (file.exists()) {
-			logger.info("Notícia já salva");
+			System.out.println("Notícia já salva");
 			return;
 		}
 		try {

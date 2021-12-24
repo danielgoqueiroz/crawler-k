@@ -9,25 +9,22 @@ Para cada notícia encontrada, extrai:
 - O Autor da notícia;
 - A data de publicação da notícia (escolha um formato padrão);
 - O conteúdo da notícia, sem tags html e sem quebras de linha.
-	
+
 
 ## Requisitos
-Ter instalado o Docker
 
-## DynamoDB
+* Java 11 (https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html)
+* Docker (https://www.docker.com/)
+* Maven (https://maven.apache.org/)
+* Git (https://cli.github.com/)
 
-docker build -t danielgoqueiroz/crawler .
+## Como rodar
 
-- Rodar docker
-docker run -p 8000:8000 amazon/dynamodb-local
+Clonar projeto
+$ git clone git@github.com:danielgoqueiroz/crawler-k.git
 
-aws dynamodb create-table --table-name news --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --billing-mode PAY_PER_REQUEST --endpoint-url http://localhost:8000
+Gerar jar 
+$ mvn install -DskipTests 
 
-Ver tabelas
-aws dynamodb list-tables --endpoint-url http://localhost:8000
-
-Ver Itens
-aws dynamodb scan --table-name news --endpoint-url http://localhost:8000
-
-Criar tabelas
-aws dynamodb create-table --attribute-definitions AttributeName=id,AttributeType=S --table-name news --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --region ap-southeast-2 --output json --profile myaws-admin
+Executar 
+$ java -jar 
