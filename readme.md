@@ -27,4 +27,4 @@ Gerar jar
 $ mvn install -DskipTests 
 
 Executar 
-$ java -jar 
+$ java -jar target/crawler-k-0.0.1-SNAPSHOT-jar-with-dependencies.jar
