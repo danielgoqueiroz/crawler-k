@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -44,6 +45,10 @@ public class WebDriver {
 		chromeDriver = new ChromeDriver(options);
 		return chromeDriver;
 	}
+	
+	public ChromeDriver getDriver() {
+		return this.driver;
+	}
 
 	public void close() {
 		driver.close();
@@ -74,6 +79,32 @@ public class WebDriver {
 		driver.get(url);
 		String html = driver.getPageSource();
 		return html;
+	}
+	
+	public void scroolToToElementId(String id) {
+		driver.executeScript("window.scrollTo(0, document.getElementById('"+ id +"').getBoundingClientRect().y)");
+	}
+	
+	public void executeScript(String script, int timeoutInSecounds) {
+		try {
+			Thread.sleep(timeoutInSecounds * 1000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		driver.executeScript(script);
+	}
+
+	public void click(String id) {
+		System.out.print("Buscando botão 'ver mais': ");
+		try {
+			driver.wait(1000);
+			Actions actions = new Actions(driver);
+			WebElement button = driver.findElement(By.id(id)).findElement(By.tagName("button"));
+			actions.moveToElement(button).click().perform();
+			System.out.println("Clicado.");
+		} catch (Exception e) {
+			System.out.println("Não encontrado.");
+		}
 	}
 
 }

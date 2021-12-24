@@ -41,8 +41,9 @@ public class G1Crawler extends Crawler {
 		} catch (Exception e) {
 			e.getStackTrace();
 		} finally {
-			getDriver().close();
-			getDriver().quit();
+			if (getDriver() != null) {
+				getDriver().close();
+			}
 		}
 	}
 	

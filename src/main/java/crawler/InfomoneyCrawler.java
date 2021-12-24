@@ -43,8 +43,9 @@ public class InfomoneyCrawler extends Crawler {
 		} catch (Exception e) {
 			e.getStackTrace();
 		} finally {
-			getDriver().close();
-			getDriver().quit();
+			if (getDriver() != null) {
+				getDriver().close();
+			}
 		}
 	}
 	

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
@@ -12,6 +13,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
 
 import crawler.G1Crawler;
 
@@ -19,6 +21,23 @@ import crawler.G1Crawler;
 public class WebDriverTest {
 
 	private static WebDriver driver;
+	
+	@Test
+	void deveClicarEmBotaoVerMais() throws InterruptedException{
+		driver = new WebDriver();
+		driver.get("https://www.infomoney.com.br/mercados/");
+		driver.scroolToToElementId("infinite-handle");
+		driver.executeScript("infiniteScroll.scroller.refresh()", 5);
+		int linksBefore= driver.getElements("//div[@class=\"row py-3 item\"]").size();
+		int linksAfter = driver.getElements("//div[@class=\"row py-3 item\"]").size();
+		while (linksAfter == linksBefore) {
+			System.out.println("Esperando carregar itens");
+			linksAfter = driver.getElements("//div[@class=\"row py-3 item\"]").size();
+			Thread.sleep(3000);
+		}
+		assertTrue(linksBefore < linksAfter);
+		driver.quit();
+	}
 	
 	@Test
 	void deveCarregarUrl() throws IOException {

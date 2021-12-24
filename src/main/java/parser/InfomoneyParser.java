@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
 import crawler.Crawler;
@@ -96,6 +97,7 @@ public class InfomoneyParser {
 	}
 	
 	private List<String> extractLinks(WebDriver webDriver) {
+		scroolDownAndClickOnSeeMore(webDriver);
 		try {
 			List<WebElement> elements = webDriver.getElements("//a[@href]");
 			Set<String> links = elements.stream().map(item -> item.getAttribute("href")).collect(Collectors.toSet());
@@ -103,6 +105,21 @@ public class InfomoneyParser {
 			return new ArrayList<String>(links);
 		} catch (Exception e) {
 			return Collections.emptyList();
+		}
+	}
+
+	private void scroolDownAndClickOnSeeMore(WebDriver webDriver) {
+		int linksBefore= webDriver.getElements("//div[@class=\"row py-3 item\"]").size();
+		int linksAfter = webDriver.getElements("//div[@class=\"row py-3 item\"]").size();
+		while (linksAfter == linksBefore) {
+			System.out.println("Esperando carregar itens");
+			linksAfter = webDriver.getElements("//div[@class=\"row py-3 item\"]").size();
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				System.err.println("Algo deu errado enquanto esperava.");
+				e.printStackTrace();
+			}
 		}
 	}
 
