@@ -1,7 +1,9 @@
 package com.danielqueiroz.app.database;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,6 +55,40 @@ public class Database {
 	public void reset(String tableName)  {
 		deleteTable();
 		createTable();
+	}
+	
+	public static void dynamoServer() {
+		ProcessBuilder processBuilder = new ProcessBuilder();
+		processBuilder.command("docker", "run", "-p", "8000:8000", "amazon/dynamodb-local");
+
+		try {
+
+			Process process = processBuilder.start();
+
+			StringBuilder output = new StringBuilder();
+
+			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+			String line;
+			while ((line = reader.readLine()) != null) {
+				output.append(line + "\n");
+			}
+
+			int exitVal = process.waitFor();
+			if (exitVal == 0) {
+				System.out.println("Iniciando banco dynamoDB!");
+				System.out.println(output);
+				System.exit(0);
+			} else {
+				// abnormal...
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	public void createTable() {

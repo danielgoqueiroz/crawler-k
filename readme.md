@@ -16,6 +16,8 @@ Ter instalado o Docker
 
 ## DynamoDB
 
+docker build -t danielgoqueiroz/crawler .
+
 - Rodar docker
 docker run -p 8000:8000 amazon/dynamodb-local
 

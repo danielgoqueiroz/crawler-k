@@ -43,7 +43,7 @@ public class InfomoneyCrawler extends Crawler {
 				findUrls(getUrl());
 			}
 		} catch (Exception e) {
-			e.getStackTrace();
+			logger.error(e.getMessage());
 		} finally {
 			if (getDriver() != null) {
 				getDriver().close();
@@ -84,9 +84,10 @@ public class InfomoneyCrawler extends Crawler {
 			}
 			return new ArrayList<String>(urls);
 		} catch (Exception e) {
-			e.getStackTrace();
+			logger.error(e.getMessage());
 			return Collections.emptyList();
 		} finally {
+			logger.info("Próximo link");
 			List<String> urlsOnDomain = urls.stream().filter(u -> u.contains(getUrl())).collect(Collectors.toList());
 			List<String> urlsNew = urlsOnDomain.stream().filter(u-> !getDatabase().exist(Utils.getHash(u))).collect(Collectors.toList());
 			
