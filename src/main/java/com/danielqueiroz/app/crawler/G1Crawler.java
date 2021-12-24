@@ -33,7 +33,7 @@ public class G1Crawler extends Crawler {
 		super("https://g1.globo.com", "/sitemap/g1/sitemap.xml");
 		setType(type);
 	}
-	
+
 	public void crawle() {
 		try {
 			logger.info("Iniciando coleta do tipo: " + getType());
@@ -43,14 +43,14 @@ public class G1Crawler extends Crawler {
 				findUrls(getUrl());
 			}
 		} catch (Exception e) {
-			e.getStackTrace();
+			logger.error(e.getMessage());
 		} finally {
 			if (getDriver() != null) {
 				getDriver().close();
 			}
 		}
 	}
-	
+
 	public List<String> extractSitemapUrls(String url) throws IOException {
 		logger.info("Extraindo links de sitemap: " + url);
 		Document documentRaw;
@@ -63,7 +63,7 @@ public class G1Crawler extends Crawler {
 		logger.info("Encontrados: " + urls.size() + " itens.");
 		return urls;
 	}
-	
+
 	public List<String> findUrls(String url) {
 		Set<String> urls = new HashSet<String>();
 		try {
@@ -72,7 +72,7 @@ public class G1Crawler extends Crawler {
 					List<String> urlsXml = extractSitemapUrls(url);
 					urls.addAll(urlsXml);
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.error(e.getMessage());
 				}
 			} else if (url.contentEquals(getUrl())) {
 				logger.info("Coletando links de página root: " + url);
@@ -87,13 +87,14 @@ public class G1Crawler extends Crawler {
 			e.getStackTrace();
 			return Collections.emptyList();
 		} finally {
-			List<String> urlsFiltred = urls.stream().filter(u-> !getDatabase().exist(Utils.getHash(u))).collect(Collectors.toList());
+			List<String> urlsFiltred = urls.stream().filter(u -> !getDatabase().exist(Utils.getHash(u)))
+					.collect(Collectors.toList());
 			urlsFiltred.forEach(u -> {
 				findUrls(u);
 			});
 		}
 	}
-	
+
 	private News processHtml(String url, Set<String> urls) throws ParseException, IOException {
 		G1Parser parser = new G1Parser(url);
 		News news = parser.parse();

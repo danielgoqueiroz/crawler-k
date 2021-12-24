@@ -92,8 +92,8 @@ public class WebDriver {
 	public void executeScript(String script, int timeoutInSecounds) {
 		try {
 			Thread.sleep(timeoutInSecounds * 1000);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
+		} catch (InterruptedException e) {
+			logger.error(e.getMessage());
 		}
 		driver.executeScript(script);
 	}

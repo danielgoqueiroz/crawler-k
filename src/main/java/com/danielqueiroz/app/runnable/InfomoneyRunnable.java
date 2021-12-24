@@ -10,9 +10,14 @@ public class InfomoneyRunnable implements Runnable{
 	private static Logger logger = LoggerFactory.getLogger(InfomoneyRunnable.class);
 	
 	public void run() {
-		logger.info("Iniciado Infomoney crawler");
-		InfomoneyCrawler crawler = new InfomoneyCrawler();
-		crawler.crawle();
+		try {
+			logger.info("Iniciado Infomoney crawler");
+			InfomoneyCrawler crawler = new InfomoneyCrawler();
+			crawler.crawle();
+			logger.info("Terminou");
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
 	}
 	
 }
