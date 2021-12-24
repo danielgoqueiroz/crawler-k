@@ -1,4 +1,4 @@
-package com.danielqueiroz.model;
+package com.danielqueiroz.app.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.danielqueiroz.utils.Utils;
+import com.danielqueiroz.app.utils.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class News {

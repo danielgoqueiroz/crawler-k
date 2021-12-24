@@ -1,4 +1,4 @@
-package com.danielqueiroz.webdriver;
+package com.danielqueiroz.app.webdriver;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,10 +10,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class WebDriver {
+	
+	private static Logger logger = LoggerFactory.getLogger(WebDriver.class);
+
 
 	private ChromeDriver driver;
 
@@ -94,15 +99,15 @@ public class WebDriver {
 	}
 
 	public void click(String id) {
-		System.out.print("Buscando botão 'ver mais': ");
+		logger.info("Buscando botão 'ver mais': ");
 		try {
 			driver.wait(1000);
 			Actions actions = new Actions(driver);
 			WebElement button = driver.findElement(By.id(id)).findElement(By.tagName("button"));
 			actions.moveToElement(button).click().perform();
-			System.out.println("Clicado.");
+			logger.info("Clicado.");
 		} catch (Exception e) {
-			System.out.println("Não encontrado.");
+			logger.info("Não encontrado.");
 		}
 	}
 

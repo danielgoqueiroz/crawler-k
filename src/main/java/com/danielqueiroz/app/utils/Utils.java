@@ -1,4 +1,4 @@
-package com.danielqueiroz.utils;
+package com.danielqueiroz.app.utils;
 
 import java.util.UUID;
 

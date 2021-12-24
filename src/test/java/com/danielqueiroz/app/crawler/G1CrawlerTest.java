@@ -12,10 +12,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.danielqueiroz.app.utils.TestUtils;
-import com.danielqueiroz.crawler.Crawler;
-import com.danielqueiroz.crawler.G1Crawler;
-import com.danielqueiroz.database.Database;
-import com.danielqueiroz.webdriver.WebDriver;
+import com.danielqueiroz.app.crawler.Crawler;
+import com.danielqueiroz.app.crawler.G1Crawler;
+import com.danielqueiroz.app.database.Database;
+import com.danielqueiroz.app.webdriver.WebDriver;
 
 public class G1CrawlerTest {
 

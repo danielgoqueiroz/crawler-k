@@ -9,8 +9,8 @@ import java.text.ParseException;
 import org.junit.jupiter.api.Test;
 
 import com.danielqueiroz.app.utils.TestUtils;
-import com.danielqueiroz.model.News;
-import com.danielqueiroz.parser.InfomoneyParser;
+import com.danielqueiroz.app.model.News;
+import com.danielqueiroz.app.parser.InfomoneyParser;
 
 public class InfomoneyParserTest {
 

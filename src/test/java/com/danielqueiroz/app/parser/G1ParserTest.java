@@ -2,18 +2,15 @@ package com.danielqueiroz.app.parser;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Date;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
 import com.danielqueiroz.app.utils.TestUtils;
-import com.danielqueiroz.model.News;
-import com.danielqueiroz.parser.G1Parser;
+import com.danielqueiroz.app.model.News;
+import com.danielqueiroz.app.parser.G1Parser;
 
 
 public class G1ParserTest {

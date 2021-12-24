@@ -1,4 +1,4 @@
-package com.danielqueiroz.parser;
+package com.danielqueiroz.app.parser;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -10,12 +10,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.danielqueiroz.model.News;
-import com.danielqueiroz.webdriver.WebDriver;
+import com.danielqueiroz.app.model.News;
+import com.danielqueiroz.app.webdriver.WebDriver;
 
 public class InfomoneyParser {
 
+	private static Logger logger = LoggerFactory.getLogger(InfomoneyParser .class);
+	
 	public enum PageFormat {
 
 		F2021("//div[contains(@class, \"article-content\")]", //
@@ -72,7 +76,7 @@ public class InfomoneyParser {
 			SimpleDateFormat format = new SimpleDateFormat(pageFormat.DATE_FORMAT);
 			String article = webDriver.getText(pageFormat.XPATH_ARTICLE);
 			if (article.isEmpty()) {
-				System.out.println("Página sem conteúdo válido: " + url);
+				logger.info("Página sem conteúdo válido: " + url);
 				return null;
 			}
 
@@ -106,14 +110,14 @@ public class InfomoneyParser {
 		if (webDriver.getElements("//div[@id=\"infinite-handle\"]").isEmpty()) {
 			return;
 		}
-		System.out.println("Descendo na página.");
+		logger.info("Descendo na página.");
 		webDriver.scroolToToElementId("infinite-handle");
 		int linksBefore= webDriver.getElements("//div[@class=\"row py-3 item\"]").size();
 		int linksAfter = webDriver.getElements("//div[@class=\"row py-3 item\"]").size();
-		System.out.println("Executando ação 'veja mais'");
+		logger.info("Executando ação 'veja mais'");
 		webDriver.executeScript("infiniteScroll.scroller.refresh()", 5);
 		while (linksAfter == linksBefore) {
-			System.out.println("Esperando carregar itens");
+			logger.info("Esperando carregar itens");
 			linksAfter = webDriver.getElements("//div[@class=\"row py-3 item\"]").size();
 			try {
 				Thread.sleep(3000);

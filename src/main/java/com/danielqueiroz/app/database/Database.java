@@ -1,4 +1,4 @@
-package com.danielqueiroz.database;
+package com.danielqueiroz.app.database;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -26,11 +28,13 @@ import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
-import com.danielqueiroz.model.News;
-import com.danielqueiroz.model.NewsUnknow;
+import com.danielqueiroz.app.model.News;
+import com.danielqueiroz.app.model.NewsUnknow;
 import com.google.gson.Gson;
 
 public class Database {
+
+	private static Logger logger = LoggerFactory.getLogger(Database.class);
 
 	private static final String NEWS = "news";
 	private static AmazonDynamoDB client;
@@ -61,7 +65,7 @@ public class Database {
 					new ProvisionedThroughput(1L, 1L));
 			try {
 				table.waitForActive();
-				System.out.println("Sucesso.  Status da tebela: " + table.getDescription().getTableStatus());
+				logger.info("Sucesso.  Status da tebela: " + table.getDescription().getTableStatus());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				System.err.println("Erro ao criar tabela: " + table.getDescription().getTableStatus());
@@ -84,7 +88,7 @@ public class Database {
 		Item item = NewsUnknow.getItem(newsUnknow);
 		PutItemOutcome putItem = table.putItem(item);
 		Item itemSaved = putItem.getItem();
-		System.out.println("Notícia sem conteúdo"+ newsUnknow.getId() + " salva no banco.");
+		logger.info("Notícia sem conteúdo"+ newsUnknow.getId() + " salva no banco.");
 		return itemSaved;
 	}
 	
@@ -93,7 +97,7 @@ public class Database {
 		Item item = News.getItem(news);
 		PutItemOutcome putItem = table.putItem(item);
 		Item itemSaved = putItem.getItem();
-		System.out.println("Notícia "+ news.getId() + " salva no banco.");
+		logger.info("Notícia "+ news.getId() + " salva no banco.");
 		return itemSaved;
 	}
 	
@@ -106,7 +110,6 @@ public class Database {
 	public Item get(String id) {
 		Table table = dynamoDB.getTable(NEWS);
 		Item item = table.getItem("id", id);
-		System.out.println(item);
 		return item;
 	}
 
@@ -129,7 +132,7 @@ public class Database {
 		}
 
 		if (file.exists()) {
-			System.out.println("Notícia já salva");
+			logger.info("Notícia já salva");
 			return;
 		}
 		try {

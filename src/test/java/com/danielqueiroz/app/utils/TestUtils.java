@@ -7,7 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.danielqueiroz.model.News;
+import com.danielqueiroz.app.model.News;
 
 public class TestUtils {
 

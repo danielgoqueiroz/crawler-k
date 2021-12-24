@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.danielqueiroz.app.utils.TestUtils;
-import com.danielqueiroz.database.Database;
-import com.danielqueiroz.model.News;
+import com.danielqueiroz.app.database.Database;
+import com.danielqueiroz.app.model.News;
 
 public class DatabaseTest {
 

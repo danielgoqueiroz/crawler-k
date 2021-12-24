@@ -1,4 +1,4 @@
-package com.danielqueiroz.parser;
+package com.danielqueiroz.app.parser;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -10,12 +10,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.danielqueiroz.model.News;
-import com.danielqueiroz.webdriver.WebDriver;
+import com.danielqueiroz.app.model.News;
+import com.danielqueiroz.app.webdriver.WebDriver;
 
 public class G1Parser {
 
+	private static Logger logger = LoggerFactory.getLogger(G1Parser .class);
+	
 	public enum PageFormat {
 
 		F2021("//article", // artigo
@@ -81,7 +85,7 @@ public class G1Parser {
 			SimpleDateFormat format = new SimpleDateFormat(pageFormat.DATE_FORMAT);
 			String article = webDriver.getText(pageFormat.XPATH_ARTICLE);
 			if (article.isEmpty()) {
-				System.out.println("Página sem conteúdo válido: " + url);
+				logger.info("Página sem conteúdo válido: " + url);
 				return null;
 			}
 

@@ -12,8 +12,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 
-import com.danielqueiroz.webdriver.WebDriver;
-
+import com.danielqueiroz.app.webdriver.WebDriver;
 
 public class WebDriverTest {
 

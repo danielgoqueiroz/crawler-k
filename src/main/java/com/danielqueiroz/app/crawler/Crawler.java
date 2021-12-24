@@ -1,15 +1,18 @@
-package com.danielqueiroz.crawler;
+package com.danielqueiroz.app.crawler;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.danielqueiroz.database.Database;
-import com.danielqueiroz.model.News;
-import com.danielqueiroz.model.NewsUnknow;
-import com.danielqueiroz.webdriver.WebDriver;
+import com.danielqueiroz.app.model.News;
+import com.danielqueiroz.app.model.NewsUnknow;
+import com.danielqueiroz.app.webdriver.WebDriver;
+import com.danielqueiroz.app.CrawlerMain;
+import com.danielqueiroz.app.database.Database;
 
 public class Crawler {
 	
