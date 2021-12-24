@@ -111,7 +111,6 @@ public class G1Parser {
 		try {
 			List<WebElement> elements = webDriver.getElements("//a[@href]");
 			Set<String> links = elements.stream().map(item -> item.getAttribute("href")).collect(Collectors.toSet());
-			System.out.println("Encontrados " + links.size() + " links para explorar.");
 			this.links.addAll(links);
 			return new ArrayList<String>(links);
 		} catch (Exception e) {

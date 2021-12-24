@@ -53,7 +53,7 @@ public class InfomoneyParser {
 	private News news;
 	private List<String> links;
 
-	InfomoneyParser(String url) {
+	public InfomoneyParser(String url) {
 		this.links = new ArrayList<String>();
 		news = new News();
 		news.setUrl(url);
@@ -84,7 +84,7 @@ public class InfomoneyParser {
 			String dateText = webDriver.getText(pageFormat.XPATH_DATE);
 
 			news.setUrl(this.url);
-			news.setContent(webDriver.getText(pageFormat.XPATH_ARTICLE).replaceAll("\\n", "").replaceAll("\\r", ""));
+			news.setContent(webDriver.getText(pageFormat.XPATH_ARTICLE).replaceAll("\\n", " ").replaceAll("\\r", ""));
 			news.setTitle(webDriver.getText(pageFormat.XPATH_TITLE));
 			news.setCaption(webDriver.getText(pageFormat.XPATH_SUBTITLE));
 			news.setAuthor(webDriver.getText(pageFormat.XPATH_AUTHOR).replace("Por ", ""));
@@ -99,7 +99,6 @@ public class InfomoneyParser {
 		try {
 			List<WebElement> elements = webDriver.getElements("//a[@href]");
 			Set<String> links = elements.stream().map(item -> item.getAttribute("href")).collect(Collectors.toSet());
-			System.out.println("Encontrados " + links.size() + " links para explorar.");
 			this.links.addAll(links);
 			return new ArrayList<String>(links);
 		} catch (Exception e) {

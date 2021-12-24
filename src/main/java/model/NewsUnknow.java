@@ -23,7 +23,6 @@ public class NewsUnknow {
 		this.url = url;
 	}
 	
-	
 	public String getUrl() {
 		return url;
 	}
