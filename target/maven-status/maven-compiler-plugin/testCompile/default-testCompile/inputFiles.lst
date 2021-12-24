@@ -1,8 +1,8 @@
-D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\webdriver\WebDriverTest.java
-D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\parser\InfomoneyParserTest.java
-D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\crawler\G1CrawlerTest.java
-D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\Utils\TestUtils.java
-D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\parser\G1ParserTest.java
-D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\crawler\InfoMoneyCrawlerTest.java
-D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\database\DatabaseTest.java
-D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\webdriver\ChromeDriverTest.java
+D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\com\danielqueiroz\app\webdriver\ChromeDriverTest.java
+D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\com\danielqueiroz\app\parser\G1ParserTest.java
+D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\com\danielqueiroz\app\utils\TestUtils.java
+D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\com\danielqueiroz\app\crawler\InfoMoneyCrawlerTest.java
+D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\com\danielqueiroz\app\webdriver\WebDriverTest.java
+D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\com\danielqueiroz\app\crawler\G1CrawlerTest.java
+D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\com\danielqueiroz\app\database\DatabaseTest.java
+D:\Desenvolvimento\javaWorkspaces\crawler-k\src\test\java\com\danielqueiroz\app\parser\InfomoneyParserTest.java

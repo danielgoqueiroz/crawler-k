@@ -128,7 +128,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>app.CrawlerMain</mainClass>
+							<mainClass>com.danielqueiroz.app.CrawlerMain</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

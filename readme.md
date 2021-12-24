@@ -37,12 +37,6 @@ ChromeDriver versão 96 (https://sites.google.com/chromium.org/driver/)
 
 ## DynamoDB
 
-Doc
-https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/creating-clients.html
-
-Tutorial
-https://stackoverflow.com/questions/34137043/amazon-dynamodb-local-unknown-error-exception-or-failure
-
 - Rodar docker
 docker run -p 8000:8000 amazon/dynamodb-local
 
